@@ -1,0 +1,141 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.myItem {
+
+   
+}
+
+.address{
+    width: 300px;
+    float: left;
+    padding: 5px;
+    height: 35px;
+}
+
+.count {
+    width: 200px;
+float: right;
+    padding: 5px;
+}
+
+.rewardpool {
+    height: 300px;
+    width: 300px;
+    float: left;
+    background-color: #13161f;
+    color: #fff;
+        
+}
+
+.rewardpool h2 {
+    background-color: #13161f;
+    color: #fff;
+}
+
+.stats {
+    height: 180px;
+    width: 500px;
+    text-align: left;
+    padding: 10px;
+}
+
+.outerleaderboard {
+    float:left;
+    color: #fff;
+    background-color: #13161f;
+}
+
+.outerpool {
+    float: left;
+background-color: #13161f;
+    color: #fff; 
+}
+
+.outerstats {
+    float: left;
+    padding: 10px;
+}
+
+.outerleaderboard td,.outerleaderboard th
+{
+    text-align : left;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #fff;
+    background-color: #13161f;
+}
+
+.outerleaderboard li {
+    width: 600px;
+    text-align: left; 
+    list-style: none; 
+    padding: 10px;
+    height: 35px;
+}
+
+.nodeAddress {
+  width: 100%;
+}
+
+.nodeAddressOuter {
+  
+}
+
+.count {
+    text-align: right;
+}
+
+.outerleaderboard li:nth-child(odd) {
+    background-color: #13161f;
+}
+.outerleaderboard li:nth-child(even) {
+    background-color: black;
+}
+
+.leaderboard {
+    width: 100%;
+    background-color: #13161f;
+display: inline-block;
+}
+
+body {
+    font-family:    "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+
+}
