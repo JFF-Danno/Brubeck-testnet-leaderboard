@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useState , useEffect } from "react";
 import axios from 'axios';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { Label, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 function App() {
 
@@ -29,42 +29,58 @@ function App() {
 
     const getFeed = async () => {
         try {
-         const res = await axios( 'https://testnet1.streamr.network:3013/leaderboard'  );    
-         setResults( res.data.map((row,index) => <li key={index}><div className='nodeAddress' ><div className='address' >{row.nodeAddress}</div><div className='count' >{row.count}</div></div></li> ));
+          var percentages = [];
+          const res = await axios( 'https://testnet1.streamr.network:3013/leaderboard'  );    
+          for ( var i = 0; i < res.data.length; i++ ) {
+              percentages[i] = Math.round( await getPercentage( res.data[i].nodeAddress ) * 100 );
+          }
+
+         setResults( res.data.map((row,index) => <li key={index}><a target='_blank' href={'https://streamr.network/network-explorer/nodes/' + row.nodeAddress }  ><div className='nodeAddress' ><div className='address' >{row.nodeMnemonic}</div><div className='count' >{row.count} - {percentages[index]}%</div></div></a></li> ));
 
          const rewardpool = await axios( 'https://testnet1.streamr.network:3013/rewardpool'  );    
-         setRewardPool( <div className='rewardpool'><h2>Pool size </h2> {rewardpool.data.poolSize} <br/><br/><h2>Most Nodes Seen</h2> {rewardpool.data.mostNodesSeen}</div> );
+         setRewardPool( <div className='rewardpool'><h2>Pool size </h2> {rewardpool.data.poolSize} DATA<br/><br/><h2>Most Nodes Seen</h2> {rewardpool.data.mostNodesSeen}</div> );
     }
     catch(e){console.log(e);}
-}
+    }
+
+    const getPercentage = async (address) => {
+      try {
+        const res = await axios( 'https://testnet1.streamr.network:3013/stats/' + address  );    
+        return res.data.claimPercentage;
+      }
+      catch(e){ console.log(e); }
+    } 
+
   return (
     <div className="App">
+      <div className="charts" >
+        <h2>Reward code statistics</h2>
        {( chart.length > 0 && ( <LineChart width={800} height={300} data={chart}>
         <Line type="monotone" dataKey="topologySize" stroke="#0000ff" />
         <Line type="monotone" dataKey="receivedClaims" stroke="#ff0000" />
         <CartesianGrid stroke="#ccc" />
  <Tooltip />
   <Legend />
-        <XAxis />
+        <XAxis> </XAxis>
         <YAxis />
       </LineChart> ) )}
-
+        <h2>Network latency</h2>
         {( chart.length > 0 && ( <LineChart width={800} height={300} data={chart}>
-        <Line type="monotone" dataKey="meanPropagationDelay" stroke="#000022" />
+        <Line type="monotone" legendType='none' dataKey="meanPropagationDelay" stroke="#000022" />
         <CartesianGrid stroke="#ccc" />
- <Tooltip />
-  <Legend />
-        <XAxis />
-        <YAxis  />
+        <Tooltip />
+        <Legend />
+        <XAxis ><Label value="meanPropagationDelay (ms)" offset={-2} position="insideBottom" /></XAxis>
+        <YAxis ></YAxis>
       </LineChart> ) )}
 
-
+</div>
 <hr/>
     <div className='leaderboard' >
     <div className='outerleaderboard' >
     <h1>Leader Board</h1>
     <ul>
-      <li><div className='nodeAddress' >Address<div className='count' > Count</div></div></li>
+      <li><div className='nodeAddress' >Address<div className='count' > Count - % Claimed</div></div></li>
       {results}
     </ul>
     </div><div className='outerpool' ><h1>Reward Pool</h1>
